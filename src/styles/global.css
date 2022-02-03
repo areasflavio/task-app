@@ -1,17 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 *,
 *:after,
 *:before {
   box-sizing: border-box;
 }
+
 body {
   background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
 
-  font-family: sans-serif;
-  color: #333333;
+body,
+input,
+button {
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.0017em;
+}
+
+h1 {
+  font-family: 'Spartan', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: -0.408px;
+}
+
+body > div {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+  padding: 30px;
 }
 
 /* Customize the label (the container) */
@@ -21,7 +53,7 @@ body {
   padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 22px;
+
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -29,7 +61,7 @@ body {
 }
 
 /* Hide the browser's default checkbox */
-.container input {
+.container input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -49,8 +81,12 @@ body {
   background: url('../assets/icons/uncheck.svg') no-repeat center;
 }
 
+.container input[type='checkbox']:disabled ~ .checkmark {
+  cursor: default;
+}
+
 /* When the checkbox is checked, add the checkmark*/
-.container input:checked ~ .checkmark {
+.container input[type='checkbox']:checked ~ .checkmark {
   background: url('../assets/icons/check.svg') no-repeat center;
   overflow: hidden;
 }
@@ -73,7 +109,7 @@ body {
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.container input[type='checkbox']:checked ~ .checkmark:after {
   display: block;
   background: #ff5460;
 
@@ -83,6 +119,8 @@ body {
 /* Set the word as checkmark reference */
 .content {
   position: relative;
+  line-height: 24px;
+  padding-top: 4px;
 }
 
 /* Create the check word animation */
@@ -96,20 +134,47 @@ body {
 }
 
 /* Change the word color when checked */
-.container input:checked ~ .content {
+.container input[type='checkbox']:checked ~ .content {
   color: #555555;
 }
 
 /* Show the word checkmark when checked */
-.container input:checked ~ .content:after {
+.container input[type='checkbox']:checked ~ .content:after {
   content: '';
   height: 2px;
   background: #555555;
   position: absolute;
   left: 0;
-  top: 48%;
+  top: 50%;
 
   border-radius: 16px;
 
   animation: checkWord 0.4s cubic-bezier(0.77, 0.09, 0.98, 0.51) forwards;
+}
+
+.container input[type='text'] {
+  margin: 0;
+  border: 0;
+  outline: 0;
+
+  line-height: 24px;
+}
+
+.add-task {
+  width: 48px;
+  height: 48px;
+
+  display: block;
+  margin-left: auto;
+
+  border: 0;
+  cursor: pointer;
+
+  background: url('../assets/icons/add-task.svg');
+
+  transition: filter 0.2s;
+}
+
+.add-task:hover {
+  filter: brightness(0.97);
 }
