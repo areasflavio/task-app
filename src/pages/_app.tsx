@@ -3,11 +3,13 @@ import { ThemeProvider } from 'styled-components';
 
 import { lightTheme } from '../styles/themes';
 
-import '../styles/global.css';
+import GlobalStyle from '../styles/global';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={lightTheme}>
+      <GlobalStyle />
+
       <Component {...pageProps} />
     </ThemeProvider>
   );
