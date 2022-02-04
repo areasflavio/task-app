@@ -24,13 +24,20 @@ const dbTasks = [
   },
 ];
 
+type Task = {
+  _id: number;
+  description: string;
+  completed: boolean;
+};
+
 const Home: NextPage = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const labelRef = useRef<HTMLLabelElement | null>(null);
 
-  const [tasks, setTasks] = useState(dbTasks);
+  const [tasks, setTasks] = useState<Task[]>(dbTasks);
   const [isNewTaskInputOpen, setIsNewTaskInputOpen] = useState(true);
   const [newTaskDescription, setNewTaskDescription] = useState('');
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   useEffect(() => {
     const label = labelRef.current;
@@ -52,17 +59,42 @@ const Home: NextPage = () => {
 
   const handleCreateTask = () => {
     if (!(newTaskDescription.trim() === '')) {
-      const newTask = {
+      let newTask = {
         _id: tasks.length + 1,
-        description: newTaskDescription,
         completed: false,
+        description: newTaskDescription,
       };
 
+      if (editingTask) {
+        (newTask._id = editingTask._id),
+          (newTask.completed = editingTask.completed);
+      }
+
       setTasks((tasks) => [newTask, ...tasks]);
+      setEditingTask(null);
     }
 
     setNewTaskDescription('');
     handleToggleCreateInput();
+  };
+
+  const handleDeleteTask = (id: number) => {
+    const filteredTasks = tasks.filter((task) => task._id !== id);
+
+    setTasks(filteredTasks);
+  };
+
+  const handleEditTask = (id: number) => {
+    const task = tasks.find((task) => task._id === id);
+
+    if (!task) return;
+
+    setEditingTask(task);
+
+    handleToggleCreateInput();
+
+    setNewTaskDescription(task.description);
+    handleDeleteTask(id);
   };
 
   const handleToggleCreateInput = () => {
@@ -85,8 +117,8 @@ const Home: NextPage = () => {
     <div>
       <h1>tasked</h1>
 
-      <label ref={labelRef} className="container">
-        <input type="checkbox" checked={false} disabled />
+      <label ref={labelRef} className="container text-input">
+        <input type="checkbox" disabled />
         <input
           ref={inputRef}
           type="text"
@@ -94,21 +126,37 @@ const Home: NextPage = () => {
           value={newTaskDescription}
           onChange={(e) => setNewTaskDescription(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleCreateTask()}
+          autoComplete="off"
         />
         <span className="checkmark"></span>
       </label>
 
-      {tasks.map((task) => (
-        <label className="container" key={task._id}>
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => handleCompleted(task._id)}
-          />
-          <span className="content">{task.description}</span>
-          <span className="checkmark"></span>
-        </label>
-      ))}
+      <ul>
+        {tasks.map((task) => (
+          <li key={task._id}>
+            <label className="container">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => handleCompleted(task._id)}
+              />
+              <span className="content">{task.description}</span>
+              <span className="checkmark"></span>
+            </label>
+
+            <div className="task-controls">
+              <button
+                className="edit"
+                onClick={() => handleEditTask(task._id)}
+              ></button>
+              <button
+                className="delete"
+                onClick={() => handleDeleteTask(task._id)}
+              ></button>
+            </div>
+          </li>
+        ))}
+      </ul>
 
       <button className="add-task" onClick={handleToggleCreateInput}></button>
     </div>

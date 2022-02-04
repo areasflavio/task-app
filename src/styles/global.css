@@ -46,12 +46,37 @@ body > div {
   padding: 30px;
 }
 
+ul {
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+li + li {
+  margin-top: 8px;
+}
+
+li:hover {
+  background: #eeeeee;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
 /* Customize the label (the container) */
 .container {
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
+  padding-left: 32px;
   cursor: pointer;
 
   -webkit-user-select: none;
@@ -152,12 +177,46 @@ body > div {
   animation: checkWord 0.4s cubic-bezier(0.77, 0.09, 0.98, 0.51) forwards;
 }
 
+.container.text-input {
+  margin: 0 0 8px 8px;
+}
+
 .container input[type='text'] {
   margin: 0;
   border: 0;
   outline: 0;
 
   line-height: 24px;
+  border-radius: 6px;
+  background: #eeeeee;
+}
+
+li:hover .task-controls {
+  display: flex;
+}
+
+.task-controls {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.task-controls .edit,
+.task-controls .delete {
+  width: 12px;
+  height: 12px;
+}
+
+.task-controls .edit {
+  background: url('../assets/icons/edit.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.task-controls .delete {
+  background: url('../assets/icons/delete.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .add-task {
@@ -166,9 +225,6 @@ body > div {
 
   display: block;
   margin-left: auto;
-
-  border: 0;
-  cursor: pointer;
 
   background: url('../assets/icons/add-task.svg');
 
