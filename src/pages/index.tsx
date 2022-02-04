@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useEffect, useRef, useState } from 'react';
+import { Header } from '../components/Header';
 
 const dbTasks = [
   {
@@ -115,7 +116,7 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <h1>tasked</h1>
+      <Header />
 
       <label ref={labelRef} className="container text-input">
         <input type="checkbox" disabled />

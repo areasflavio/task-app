@@ -20,14 +20,15 @@ export default createGlobalStyle`
     background: ${(props) => props.theme.colors.bgColor};
     -webkit-font-smoothing: antialiased !important;
 
-    height: 100vh;
-    position: relative;
+    padding: 1.5rem;
 
+    position: relative;
+    
     transition: 0.35s;
   }
 
   body, input, button {
-    font: 1.125rem ${(props) => props.theme.fonts.text}, sans-serif;
+    font: 1rem ${(props) => props.theme.fonts.text}, sans-serif;
     font-style: normal;
     font-weight: normal;
     line-height: 1.223;
