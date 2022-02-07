@@ -8,12 +8,11 @@ export const Container = styled.ul`
     align-items: center;
     justify-content: space-between;
 
-    border-radius: 6px;
-    padding: 4px 8px;
+    padding: 0.25rem 1.5rem;
   }
 
   li + li {
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
 
   li:hover {
@@ -33,12 +32,12 @@ export const Container = styled.ul`
 export const TaskControls = styled.div`
   display: none;
   align-items: center;
-  gap: 4px;
+  gap: 0.25rem;
 
   & .edit,
   & .delete {
-    width: 12px;
-    height: 12px;
+    width: 0.75rem;
+    height: 0.75rem;
   }
 
   & .edit {

@@ -5,6 +5,8 @@ export const Container = styled.header`
   align-items: center;
   justify-content: space-between;
 
+  margin: 2.5rem 1.5rem 1.25rem;
+
   h1 {
     font-family: ${(props) => props.theme.fonts.title}, sans-serif;
     font-style: normal;

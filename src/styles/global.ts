@@ -20,8 +20,6 @@ export default createGlobalStyle`
     background: ${(props) => props.theme.colors.bgColor};
     -webkit-font-smoothing: antialiased !important;
 
-    padding: 1.5rem;
-
     position: relative;
     
     transition: 0.35s;
