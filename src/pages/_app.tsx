@@ -1,17 +1,30 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 
-import { lightTheme } from '../styles/themes';
+import { TaskProvider } from '../context/TaskContext';
 
+import { lightTheme } from '../styles/themes';
 import GlobalStyle from '../styles/global';
+import Head from 'next/head';
+import { RefsProvider } from '../context/RefsContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={lightTheme}>
-      <GlobalStyle />
+    <>
+      <Head>
+        <title>tasked</title>
+      </Head>
 
-      <Component {...pageProps} />
-    </ThemeProvider>
+      <ThemeProvider theme={lightTheme}>
+        <GlobalStyle />
+
+        <RefsProvider>
+          <TaskProvider>
+            <Component {...pageProps} />
+          </TaskProvider>
+        </RefsProvider>
+      </ThemeProvider>
+    </>
   );
 }
 
