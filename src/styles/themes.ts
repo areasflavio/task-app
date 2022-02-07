@@ -4,6 +4,7 @@ const darkTheme = {
     bgColor: '#111111',
     bgSecColor: '#222222',
     textColor: '#ffffff',
+    textSecColor: '#555555',
     highlightColor: '#ff5a60',
   },
   fonts: {
@@ -18,6 +19,7 @@ const lightTheme = {
     bgColor: '#ffffff',
     bgSecColor: '#eeeeee',
     textColor: '#111111',
+    textSecColor: '#555555',
     highlightColor: '#ff5a60',
   },
   fonts: {

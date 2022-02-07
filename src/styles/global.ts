@@ -29,6 +29,7 @@ export default createGlobalStyle`
 
   body, input, button {
     font: 1rem ${(props) => props.theme.fonts.text}, sans-serif;
+    color: ${(props) => props.theme.colors.textColor};
     font-style: normal;
     font-weight: normal;
     line-height: 1.223;
