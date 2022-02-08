@@ -1,11 +1,19 @@
-import { InputHTMLAttributes, useState } from 'react';
+import {
+  forwardRef,
+  ForwardRefRenderFunction,
+  InputHTMLAttributes,
+  useState,
+} from 'react';
 import Image from 'next/image';
 
 import { Container } from './styles';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+type InputProps = {} & InputHTMLAttributes<HTMLInputElement>;
 
-const Input: React.FC<InputProps> = ({ children, type, onFocus, ...rest }) => {
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { children, type, onFocus, ...rest },
+  ref
+) => {
   const [inputType, setInputType] = useState(type);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -28,6 +36,7 @@ const Input: React.FC<InputProps> = ({ children, type, onFocus, ...rest }) => {
   return (
     <Container isFocused={isFocused}>
       <input
+        ref={ref}
         type={inputType}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
@@ -56,4 +65,4 @@ const Input: React.FC<InputProps> = ({ children, type, onFocus, ...rest }) => {
   );
 };
 
-export { Input };
+export const Input = forwardRef(InputBase);

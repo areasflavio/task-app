@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
-export const Container = styled.footer`
+export const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   margin-top: 1.25rem;
+
+  width: 100%;
+  background: ${(props) => props.theme.colors.bgColor};
 
   button {
     display: flex;

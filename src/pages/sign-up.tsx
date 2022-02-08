@@ -1,11 +1,27 @@
+import { useRef } from 'react';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 
 import { Header } from '../components/Header';
 import { SignBody } from '../components/SignBody';
 import { Input } from '../components/SignBody/Input';
-import { SignFooter } from '../components/SignFooter';
+import { FormAction } from '../components/FormAction';
 
 const SignUp: React.FC = () => {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => console.log(data);
+
+  const handleButtonSubmit = () => {
+    btnRef.current?.click();
+  };
+
   return (
     <>
       <Header />
@@ -15,24 +31,46 @@ const SignUp: React.FC = () => {
 
         <h2>First create your account</h2>
 
-        <form>
-          <Input type="text" name="name" placeholder="Full name" />
-          <Input type="email" name="email" placeholder="Email" />
-          <Input type="password" name="password" placeholder="Password" />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            type="text"
+            placeholder="Full name"
+            required
+            {...register('name')}
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            required
+            {...register('email')}
+          />
           <Input
             type="password"
-            name="confirm_password"
-            placeholder="Confirm your password"
+            placeholder="Password"
+            required
+            {...register('password')}
           />
+          <Input
+            type="password"
+            placeholder="Confirm your password"
+            required
+            {...register('confirm_password')}
+          />
+
+          <button
+            ref={btnRef}
+            type="submit"
+            style={{ display: 'none' }}
+          ></button>
         </form>
       </SignBody>
 
-      <SignFooter>
-        <button type="submit">create account</button>
+      <FormAction>
+        <button onClick={handleButtonSubmit}>create account</button>
         <p>
           Already have an account? <Link href="/sign-in">Login</Link>
         </p>
-      </SignFooter>
+      </FormAction>
     </>
   );
 };
