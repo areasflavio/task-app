@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Header } from '../components/Header';
 import { SignBody } from '../components/SignBody';
+import { Input } from '../components/SignBody/Input';
 import { SignFooter } from '../components/SignFooter';
 
 const SignIn: React.FC = () => {
@@ -15,8 +16,8 @@ const SignIn: React.FC = () => {
         <h2>Enter your email and password</h2>
 
         <form>
-          <input type="email" name="email" placeholder="Email" />
-          <input type="password" name="password" placeholder="Password" />
+          <Input type="email" name="email" placeholder="Email" />
+          <Input type="password" name="password" placeholder="Password" />
         </form>
       </SignBody>
 

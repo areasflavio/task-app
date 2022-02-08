@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Header } from '../components/Header';
 import { SignBody } from '../components/SignBody';
+import { Input } from '../components/SignBody/Input';
 import { SignFooter } from '../components/SignFooter';
 
 const SignUp: React.FC = () => {
@@ -15,10 +16,10 @@ const SignUp: React.FC = () => {
         <h2>First create your account</h2>
 
         <form>
-          <input type="text" name="name" placeholder="Full name" />
-          <input type="email" name="email" placeholder="Email" />
-          <input type="password" name="password" placeholder="Password" />
-          <input
+          <Input type="text" name="name" placeholder="Full name" />
+          <Input type="email" name="email" placeholder="Email" />
+          <Input type="password" name="password" placeholder="Password" />
+          <Input
             type="password"
             name="confirm_password"
             placeholder="Confirm your password"
