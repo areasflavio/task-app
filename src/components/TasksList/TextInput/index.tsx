@@ -1,7 +1,7 @@
-import { useRef } from '../../hooks/useRef';
-import { useTask } from '../../hooks/useTask';
+import { useRef } from '../../../hooks/useRef';
+import { useTask } from '../../../hooks/useTask';
 
-import { TaskLabel } from '../../styles/TaskLabelStyle';
+import { TaskLabel } from '../../../styles/TaskLabelStyle';
 import { Container } from './styles';
 
 const TextInput: React.FC = () => {

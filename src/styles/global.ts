@@ -42,4 +42,8 @@ export default createGlobalStyle`
     cursor: pointer;
     border: none;
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
