@@ -2,11 +2,20 @@ import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   isFocused: boolean;
-  // isFilled: boolean;
-  // isErrored: boolean;
+  isErrored: boolean;
 }
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div`
+  span {
+    font-weight: bold;
+    font-size: 0.625rem;
+    line-height: 1.2;
+
+    color: ${(props) => props.theme.colors.highlightColor};
+  }
+`;
+
+export const InputContainer = styled.div<ContainerProps>`
   display: grid;
   grid-template-columns: 1fr auto;
 
@@ -18,8 +27,14 @@ export const Container = styled.div<ContainerProps>`
   ${(props) =>
     props.isFocused &&
     css`
-      border-color: ${(props) => props.theme.colors.highlightColor};
+      border-color: ${(props) => props.theme.colors.textColor};
       color: ${(props) => props.theme.colors.textColor};
+    `}
+
+  ${(props) =>
+    props.isErrored &&
+    css`
+      border-color: ${(props) => props.theme.colors.highlightColor};
     `}
 
   input {

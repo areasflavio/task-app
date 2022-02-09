@@ -1,22 +1,39 @@
 import { useRef } from 'react';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Header } from '../components/Header';
-import { SignBody } from '../components/SignBody';
-import { Input } from '../components/SignBody/Input';
-import { FormAction } from '../components/FormAction';
+import { Sign } from '../components/Sign';
+import { Input } from '../components/Sign/Input';
+import { FormAction } from '../components/Sign/FormAction';
+
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
+const signInFormSchema = yup.object().shape({
+  email: yup.string().required('Email required').email('Email invalid'),
+  password: yup.string().required('Password required'),
+});
 
 const SignIn: React.FC = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignInFormData>({
+    resolver: yupResolver(signInFormSchema),
+  });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit: SubmitHandler<SignInFormData> = async (values) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    console.log(values);
+  };
 
   const handleButtonSubmit = () => {
     btnRef.current?.click();
@@ -26,16 +43,22 @@ const SignIn: React.FC = () => {
     <>
       <Header />
 
-      <SignBody>
+      <Sign>
         <h1>sign in</h1>
 
         <h2>Enter your email and password</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Input type="email" placeholder="Email" {...register('email')} />
+          <Input
+            type="email"
+            placeholder="Email"
+            error={errors.email}
+            {...register('email')}
+          />
           <Input
             type="password"
             placeholder="Password"
+            error={errors.password}
             {...register('password')}
           />
 
@@ -45,7 +68,7 @@ const SignIn: React.FC = () => {
             style={{ display: 'none' }}
           ></button>
         </form>
-      </SignBody>
+      </Sign>
 
       <FormAction>
         <button onClick={handleButtonSubmit}>login</button>

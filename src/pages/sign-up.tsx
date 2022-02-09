@@ -1,20 +1,40 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Header } from '../components/Header';
-import { SignBody } from '../components/SignBody';
-import { Input } from '../components/SignBody/Input';
-import { FormAction } from '../components/FormAction';
+import { Sign } from '../components/Sign';
+import { Input } from '../components/Sign/Input';
+import { FormAction } from '../components/Sign/FormAction';
+
+type SignUpFormData = {
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+};
+
+const SignUpFormData = yup.object().shape({
+  name: yup.string().required('Name required'),
+  email: yup.string().required('Email required').email('Email invalid'),
+  password: yup
+    .string()
+    .required('Password required')
+    .min(8, 'Password must contain at least 8 characters'),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
 
 const SignUp: React.FC = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignUpFormData>({ resolver: yupResolver(SignUpFormData) });
 
   const onSubmit = (data: any) => console.log(data);
 
@@ -26,7 +46,7 @@ const SignUp: React.FC = () => {
     <>
       <Header />
 
-      <SignBody>
+      <Sign>
         <h1>sign up</h1>
 
         <h2>First create your account</h2>
@@ -35,25 +55,25 @@ const SignUp: React.FC = () => {
           <Input
             type="text"
             placeholder="Full name"
-            required
+            error={errors.name}
             {...register('name')}
           />
           <Input
             type="email"
             placeholder="Email"
-            required
+            error={errors.email}
             {...register('email')}
           />
           <Input
             type="password"
             placeholder="Password"
-            required
+            error={errors.password}
             {...register('password')}
           />
           <Input
             type="password"
             placeholder="Confirm your password"
-            required
+            error={errors.confirm_password}
             {...register('confirm_password')}
           />
 
@@ -63,7 +83,7 @@ const SignUp: React.FC = () => {
             style={{ display: 'none' }}
           ></button>
         </form>
-      </SignBody>
+      </Sign>
 
       <FormAction>
         <button onClick={handleButtonSubmit}>create account</button>
