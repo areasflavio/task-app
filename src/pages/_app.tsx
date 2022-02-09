@@ -1,12 +1,11 @@
+import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 
-import { TaskProvider } from '../context/TaskContext';
+import { AppContext } from '../context';
 
 import { lightTheme } from '../styles/themes';
 import GlobalStyle from '../styles/global';
-import Head from 'next/head';
-import { RefsProvider } from '../context/RefsContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,11 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={lightTheme}>
         <GlobalStyle />
 
-        <RefsProvider>
-          <TaskProvider>
-            <Component {...pageProps} />
-          </TaskProvider>
-        </RefsProvider>
+        <AppContext>
+          <Component {...pageProps} />
+        </AppContext>
       </ThemeProvider>
     </>
   );

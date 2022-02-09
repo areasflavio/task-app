@@ -1,11 +1,11 @@
 import { createContext, useRef, MutableRefObject } from 'react';
 
-interface RefsContextProps {
+interface IRefsContextProps {
   inputRef: MutableRefObject<HTMLInputElement | null>;
   labelRef: MutableRefObject<HTMLLabelElement | null>;
 }
 
-const RefsContext = createContext({} as RefsContextProps);
+const RefsContext = createContext({} as IRefsContextProps);
 
 const RefsProvider: React.FC = ({ children }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
