@@ -10,7 +10,12 @@ const TextInput: React.FC = () => {
     useTask();
 
   return (
-    <Container ref={labelRef}>
+    <Container
+      ref={labelRef}
+      style={{
+        display: 'none',
+      }}
+    >
       <TaskLabel ref={labelRef} className="container text-input">
         <input type="checkbox" disabled />
         <input
