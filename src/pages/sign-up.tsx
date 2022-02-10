@@ -98,8 +98,6 @@ const SignUp: React.FC = () => {
 
   return (
     <>
-      <Header />
-
       <Sign>
         <h1>sign up</h1>
 

@@ -10,8 +10,6 @@ import { AddTaskButton } from '../components/AddTaskButton';
 const Home: React.FC = () => {
   return (
     <>
-      <Header />
-
       <TextInput />
 
       <TasksList />

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
   margin: 2.5rem 1.5rem 1.25rem;
 
@@ -16,5 +15,56 @@ export const Container = styled.header`
     letter-spacing: -0.408px;
 
     color: ${(props) => props.theme.colors.textColor};
+  }
+
+  button {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+
+    margin-left: auto;
+    border: 0;
+
+    background: url('/assets/icons/off.svg') no-repeat center;
+    background-color: transparent;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: ${(props) => props.theme.colors.bgSecColor};
+    }
+  }
+`;
+
+export const Profile = styled.div`
+  display: flex;
+  align-content: center;
+  margin-left: 5rem;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    line-height: 1.5rem;
+
+    span {
+      color: ${(props) => props.theme.colors.textSecColor};
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: ${(props) => props.theme.colors.textColor};
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 `;

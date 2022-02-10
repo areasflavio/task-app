@@ -8,6 +8,7 @@ type User = {
   _id: string;
   name: string;
   email: string;
+  avatar?: BinaryData;
 };
 
 type APIResponseData = {
@@ -31,13 +32,12 @@ const AuthContext = createContext({} as IAuthContextData);
 
 let authChannel: BroadcastChannel;
 
-function signOut() {
+function handleSignOut() {
   destroyCookie(undefined, 'tasked.token');
-  destroyCookie(undefined, 'tasked.refreshToken');
 
   authChannel.postMessage('signOut');
 
-  Router.push('/');
+  Router.push('/sign-in');
 }
 
 const AuthProvider: React.FC = ({ children }) => {
@@ -70,15 +70,17 @@ const AuthProvider: React.FC = ({ children }) => {
           },
         })
         .then((response) => {
-          const { _id, name, email } = response.data;
+          const { _id, name, email, avatar } = response.data;
 
           setUser({
             _id,
             name,
             email,
+            avatar,
           });
         })
         .catch(() => {
+          setUser(null);
           signOut();
         });
     }
@@ -96,7 +98,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
       const {
         token,
-        user: { _id, name },
+        user: { _id, name, avatar },
       } = response.data;
 
       if (!token) {
@@ -112,6 +114,7 @@ const AuthProvider: React.FC = ({ children }) => {
         _id,
         name,
         email,
+        avatar,
       });
 
       setTimeout(() => {
@@ -126,6 +129,11 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
+  function signOut() {
+    setUser(null);
+    handleSignOut();
+  }
+
   return (
     <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
       {children}
@@ -133,4 +141,4 @@ const AuthProvider: React.FC = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider, signOut };
+export { AuthContext, AuthProvider };

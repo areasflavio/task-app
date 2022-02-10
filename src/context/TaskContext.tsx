@@ -11,6 +11,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useRef } from '../hooks/useRef';
 import { api } from '../services/api';
 import { AxiosResponse } from 'axios';
+import { useAuth } from '../hooks/useAuth';
 
 type Task = {
   _id: string;
@@ -36,6 +37,7 @@ interface ITaskContextProps {
 const TaskContext = createContext({} as ITaskContextProps);
 
 const TaskProvider: React.FC = ({ children }) => {
+  const { isAuthenticated } = useAuth();
   const { inputRef, labelRef } = useRef();
 
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -68,8 +70,8 @@ const TaskProvider: React.FC = ({ children }) => {
       }
     };
 
-    getTasks();
-  }, []);
+    isAuthenticated && getTasks();
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const label = labelRef.current;

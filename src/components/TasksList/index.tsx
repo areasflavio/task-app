@@ -1,10 +1,13 @@
-import { useTask } from '../../hooks/useTask';
-
-import { Container, TaskControls } from './styles';
-import { TaskLabel } from '../../styles/TaskLabelStyle';
 import { useState } from 'react';
 
+import { useAuth } from '../../hooks/useAuth';
+import { useTask } from '../../hooks/useTask';
+
+import { TaskLabel } from '../../styles/TaskLabelStyle';
+import { Container, TaskControls } from './styles';
+
 const TasksList: React.FC = () => {
+  const { user } = useAuth();
   const {
     tasks,
     handleCompleted,
@@ -30,7 +33,7 @@ const TasksList: React.FC = () => {
   return (
     <Container>
       {tasks.length === 0 && isNewTaskInputOpen && (
-        <p>What do you want to get done today?</p>
+        <p>{user?.name}, what do you want to get done today?</p>
       )}
 
       {tasks.map((task) => (

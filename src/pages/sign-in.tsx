@@ -70,8 +70,6 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <Header />
-
       <Sign>
         <h1>sign in</h1>
 
