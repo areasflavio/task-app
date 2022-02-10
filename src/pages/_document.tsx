@@ -36,7 +36,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
@@ -49,7 +49,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-
         <body>
           <Main />
           <NextScript />

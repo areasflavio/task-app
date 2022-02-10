@@ -17,15 +17,23 @@ export const Container = styled.header`
     color: ${(props) => props.theme.colors.textColor};
   }
 
+  button.sign-out {
+    background: url('/assets/icons/off.svg') no-repeat center;
+  }
+
+  button.theme {
+    margin-left: auto;
+    background: url(${(props) => '/assets/icons/' + props.theme.name + '.svg'})
+      no-repeat center;
+  }
+
   button {
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 50%;
 
-    margin-left: auto;
     border: 0;
 
-    background: url('/assets/icons/off.svg') no-repeat center;
     background-color: transparent;
 
     transition: background-color 0.2s;
@@ -39,7 +47,7 @@ export const Container = styled.header`
 export const Profile = styled.div`
   display: flex;
   align-content: center;
-  margin-left: 5rem;
+  margin-left: 2rem;
 
   img {
     width: 3rem;
@@ -58,12 +66,23 @@ export const Profile = styled.div`
     }
 
     a {
+      width: max-content;
       text-decoration: none;
       font-weight: bold;
       color: ${(props) => props.theme.colors.textColor};
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    & {
+      margin-left: 0.25rem;
+
+      img {
+        display: none;
       }
     }
   }
