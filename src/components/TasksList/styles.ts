@@ -23,9 +23,20 @@ export const Container = styled.ul`
     display: flex;
   }
 
+  p {
+    font-weight: bold;
+    font-size: 1.125rem;
+    line-height: 1.375rem;
+    text-align: center;
+
+    color: ${(props) => props.theme.colors.textSecColor};
+  }
+
   button {
     border: 0;
     cursor: pointer;
+
+    color: ${(props) => props.theme.colors.highlightColor};
   }
 `;
 

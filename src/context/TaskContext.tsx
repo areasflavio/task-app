@@ -5,11 +5,15 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { parseCookies } from 'nookies';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { useRef } from '../hooks/useRef';
+import { api } from '../services/api';
+import { AxiosResponse } from 'axios';
 
 type Task = {
-  _id: number;
+  _id: string;
   description: string;
   completed: boolean;
 };
@@ -17,95 +21,166 @@ type Task = {
 interface ITaskContextProps {
   tasks: Task[];
   isNewTaskInputOpen: boolean;
+  isDeleting: boolean;
+  setIsDeleting: Dispatch<SetStateAction<boolean>>;
   newTaskDescription: string;
   setNewTaskDescription: Dispatch<SetStateAction<string>>;
   editingTask: Task | null;
-  handleCompleted: (id: number) => void;
+  handleCompleted: (task: Task) => void;
   handleCreateTask: () => void;
-  handleEditTask: (id: number) => void;
-  handleDeleteTask: (id: number) => void;
+  handleEditTask: (id: string) => void;
+  handleDeleteTask: (id: string) => void;
   handleToggleCreateInput: () => void;
 }
 
 const TaskContext = createContext({} as ITaskContextProps);
 
-const dbTasks = [
-  {
-    _id: 1,
-    completed: true,
-    description: 'One',
-  },
-  {
-    _id: 2,
-    completed: false,
-    description: 'Two',
-  },
-  {
-    _id: 3,
-    completed: false,
-    description: 'Three',
-  },
-  {
-    _id: 4,
-    completed: false,
-    description: 'Four',
-  },
-];
-
 const TaskProvider: React.FC = ({ children }) => {
   const { inputRef, labelRef } = useRef();
 
-  const [tasks, setTasks] = useState<Task[]>(dbTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [isNewTaskInputOpen, setIsNewTaskInputOpen] = useState(true);
   const [newTaskDescription, setNewTaskDescription] = useState('');
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      try {
+        const { 'tasked.token': token } = parseCookies();
+
+        const response = await api.get<Task[]>('/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            sortBy: 'updatedAt:desc',
+          },
+        });
+
+        setTasks(response.data);
+      } catch (err) {
+        toast.error("This didn't work.", {
+          style: {
+            minWidth: '250px',
+          },
+        });
+      }
+    };
+
+    getTasks();
+  }, []);
 
   useEffect(() => {
     const label = labelRef.current;
     if (label) label.style.display = 'none';
   }, [labelRef]);
 
-  const handleCompleted = (id: number) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task._id == id) {
-          return {
-            ...task,
-            completed: !task.completed,
-          };
-        } else return task;
-      })
-    );
+  const handleCompleted = async (task: Task) => {
+    try {
+      const { 'tasked.token': token } = parseCookies();
+
+      const response = await api.patch<Task>(
+        `/tasks/${task._id}`,
+        { completed: !task.completed },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      handleFilterTask(task._id);
+
+      const updatedTask = response.data;
+      setTasks((tasks) => [updatedTask, ...tasks]);
+    } catch (err) {
+      toast.error("This didn't work.", {
+        style: {
+          minWidth: '250px',
+        },
+      });
+    }
   };
 
-  const handleCreateTask = () => {
+  const handleCreateTask = async () => {
     if (!(newTaskDescription.trim() === '')) {
       let newTask = {
-        _id: tasks.length + 1,
         completed: false,
         description: newTaskDescription,
       };
 
-      if (editingTask) {
-        (newTask._id = editingTask._id),
-          (newTask.completed = editingTask.completed);
-      }
+      try {
+        const { 'tasked.token': token } = parseCookies();
 
-      setTasks((tasks) => [newTask, ...tasks]);
-      setEditingTask(null);
+        let response: AxiosResponse<Task>;
+
+        if (editingTask) {
+          response = await api.patch<Task>(
+            `/tasks/${editingTask._id}`,
+            newTask,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } else {
+          response = await api.post<Task>('/tasks', newTask, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
+
+        const createdTask = response.data;
+        setTasks((tasks) => [createdTask, ...tasks]);
+      } catch (err) {
+        toast.error("This didn't work.", {
+          style: {
+            minWidth: '250px',
+          },
+        });
+      }
     }
 
+    setEditingTask(null);
     setNewTaskDescription('');
     handleToggleCreateInput();
   };
 
-  const handleDeleteTask = (id: number) => {
+  const handleFilterTask = (id: string) => {
     const filteredTasks = tasks.filter((task) => task._id !== id);
 
     setTasks(filteredTasks);
   };
 
-  const handleEditTask = (id: number) => {
+  const handleDeleteTask = async (id: string) => {
+    if (!isDeleting) {
+      return;
+    }
+
+    try {
+      const { 'tasked.token': token } = parseCookies();
+
+      await api.delete(`/tasks/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      handleFilterTask(id);
+      setIsDeleting(false);
+    } catch (err) {
+      toast.error("This didn't work.", {
+        style: {
+          minWidth: '250px',
+        },
+      });
+    }
+  };
+
+  const handleEditTask = (id: string) => {
     const task = tasks.find((task) => task._id === id);
 
     if (!task) return;
@@ -115,7 +190,7 @@ const TaskProvider: React.FC = ({ children }) => {
     handleToggleCreateInput();
 
     setNewTaskDescription(task.description);
-    handleDeleteTask(id);
+    handleFilterTask(id);
   };
 
   const handleToggleCreateInput = () => {
@@ -144,12 +219,16 @@ const TaskProvider: React.FC = ({ children }) => {
         handleEditTask,
         handleToggleCreateInput,
         isNewTaskInputOpen,
+        isDeleting,
+        setIsDeleting,
         newTaskDescription,
         setNewTaskDescription,
         tasks,
       }}
     >
       {children}
+
+      <Toaster position="top-center" />
     </TaskContext.Provider>
   );
 };
