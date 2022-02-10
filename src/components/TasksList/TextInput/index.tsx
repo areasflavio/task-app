@@ -25,6 +25,7 @@ const TextInput: React.FC = () => {
           value={newTaskDescription}
           onChange={(e) => setNewTaskDescription(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleCreateTask()}
+          onBlur={() => handleCreateTask()}
           autoComplete="off"
         />
         <span className="checkmark"></span>

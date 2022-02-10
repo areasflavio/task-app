@@ -12,6 +12,7 @@ const TasksList: React.FC = () => {
     handleDeleteTask,
     isDeleting,
     setIsDeleting,
+    isNewTaskInputOpen,
   } = useTask();
 
   const [deletingTaskId, setdeletingTaskId] = useState('');
@@ -28,7 +29,9 @@ const TasksList: React.FC = () => {
 
   return (
     <Container>
-      {tasks.length === 0 && <p>What do you want to get done today?</p>}
+      {tasks.length === 0 && isNewTaskInputOpen && (
+        <p>What do you want to get done today?</p>
+      )}
 
       {tasks.map((task) => (
         <li key={task._id}>
