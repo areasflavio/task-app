@@ -62,7 +62,10 @@ const TasksList: React.FC = () => {
               }}
             ></button>
             {isDeleting && deletingTaskId === task._id && (
-              <button onClick={() => handleDeleteTask(task._id)}>
+              <button
+                className="confirm-delete"
+                onClick={() => handleDeleteTask(task._id)}
+              >
                 Click to confirm
               </button>
             )}

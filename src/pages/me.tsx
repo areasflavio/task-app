@@ -16,10 +16,10 @@ import { api } from '../services/api';
 import { AvatarInput } from '../styles/AvatarInput';
 
 type UpdateFormData = {
-  name?: string;
-  email?: string;
-  password?: string;
-  confirm_password?: string;
+  name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
 };
 
 const updateFormSchema = yup.object().shape({
@@ -126,8 +126,8 @@ const Profile: React.FC = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<UpdateFormData> = async (values) => {
-    const updatedData = {};
+  const onSubmit: SubmitHandler<UpdateFormData> = async (values: any) => {
+    const updatedData: any = {};
 
     for (const item in values) {
       if (item !== 'confirm_password' && values[item].trim() !== '') {

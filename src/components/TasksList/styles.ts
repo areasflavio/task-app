@@ -62,4 +62,10 @@ export const TaskControls = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
   }
+
+  & .confirm-delete {
+    background: ${(props) => props.theme.colors.bgSecColor};
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 `;
