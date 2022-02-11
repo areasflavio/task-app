@@ -8,7 +8,6 @@ type User = {
   _id: string;
   name: string;
   email: string;
-  avatar?: BinaryData;
 };
 
 type APIResponseData = {
@@ -70,13 +69,12 @@ const AuthProvider: React.FC = ({ children }) => {
           },
         })
         .then((response) => {
-          const { _id, name, email, avatar } = response.data;
+          const { _id, name, email } = response.data;
 
           setUser({
             _id,
             name,
             email,
-            avatar,
           });
         })
         .catch(() => {
@@ -98,7 +96,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
       const {
         token,
-        user: { _id, name, avatar },
+        user: { _id, name },
       } = response.data;
 
       if (!token) {
@@ -114,7 +112,6 @@ const AuthProvider: React.FC = ({ children }) => {
         _id,
         name,
         email,
-        avatar,
       });
 
       setTimeout(() => {

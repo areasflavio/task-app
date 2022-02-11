@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { parseCookies } from 'nookies';
 import toast, { Toaster } from 'react-hot-toast';
 
-import { Header } from '../components/Header';
 import { Sign } from '../components/Sign';
 import { Input } from '../components/Sign/Input';
 import { FormAction } from '../components/Sign/FormAction';

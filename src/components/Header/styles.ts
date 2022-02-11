@@ -15,6 +15,7 @@ export const Container = styled.header`
     letter-spacing: -0.408px;
 
     color: ${(props) => props.theme.colors.textColor};
+    cursor: pointer;
   }
 
   button.sign-out {

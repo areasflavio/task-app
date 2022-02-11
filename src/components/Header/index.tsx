@@ -13,23 +13,16 @@ const Header: React.FC<IHeaderProps> = ({ toggleTheme }) => {
 
   return (
     <Container>
-      <h1>tasked</h1>
+      <Link href="/" passHref>
+        <h1>tasked</h1>
+      </Link>
 
       {user && (
         <>
           <Profile>
-            {user?.avatar && (
-              <img
-                src={user?.avatar && `data:image/gif;base64,${user.avatar}`}
-                alt={user?.name}
-                height="48"
-                width="48"
-              />
-            )}
-
             <div>
               <span>Welcome back,</span>
-              <Link href="/profile" passHref>
+              <Link href="/me" passHref>
                 {user?.name}
               </Link>
             </div>
