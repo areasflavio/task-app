@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
 
@@ -39,7 +39,10 @@ function handleSignOut() {
   Router.push('/sign-in');
 }
 
-const AuthProvider: React.FC = ({ children }) => {
+interface IAuthProviderProps {
+  children: ReactNode;
+}
+const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = !!user;
 

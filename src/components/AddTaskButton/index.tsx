@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import { useTask } from '../../hooks/useTask';
 
 import { Container } from './styles';
 
-const AddTaskButton: React.FC = () => {
+const AddTaskButtonComponent = () => {
   const { handleToggleCreateInput } = useTask();
 
   return (
@@ -13,4 +14,4 @@ const AddTaskButton: React.FC = () => {
   );
 };
 
-export { AddTaskButton };
+export const AddTaskButton = memo(AddTaskButtonComponent);

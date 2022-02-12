@@ -1,7 +1,12 @@
+import { memo, ReactNode } from 'react';
 import { Container } from './styles';
 
-const FormAction: React.FC = ({ children }) => {
+interface IFormActionProps {
+  children: ReactNode;
+}
+
+const FormActionComponent = ({ children }: IFormActionProps) => {
   return <Container>{children}</Container>;
 };
 
-export { FormAction };
+export const FormAction = memo(FormActionComponent);

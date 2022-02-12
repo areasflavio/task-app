@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useTask } from '../../hooks/useTask';
@@ -6,7 +6,7 @@ import { useTask } from '../../hooks/useTask';
 import { TaskLabel } from '../../styles/TaskLabelStyle';
 import { Container, TaskControls } from './styles';
 
-const TasksList: React.FC = () => {
+const TasksListComponent = () => {
   const { user } = useAuth();
   const {
     tasks,
@@ -18,17 +18,20 @@ const TasksList: React.FC = () => {
     isNewTaskInputOpen,
   } = useTask();
 
-  const [deletingTaskId, setdeletingTaskId] = useState('');
+  const [deletingTaskId, setDeletingTaskId] = useState('');
 
-  const handleIsDeletingTask = (id: string) => {
-    setIsDeleting(true);
-    setdeletingTaskId(id);
+  const handleIsDeletingTask = useCallback(
+    (id: string) => {
+      setIsDeleting(true);
+      setDeletingTaskId(id);
 
-    setTimeout(() => {
-      setIsDeleting(false);
-      setdeletingTaskId('');
-    }, 3000);
-  };
+      setTimeout(() => {
+        setIsDeleting(false);
+        setDeletingTaskId('');
+      }, 3000);
+    },
+    [setIsDeleting]
+  );
 
   return (
     <Container>
@@ -76,4 +79,4 @@ const TasksList: React.FC = () => {
   );
 };
 
-export { TasksList };
+export const TasksList = memo(TasksListComponent);

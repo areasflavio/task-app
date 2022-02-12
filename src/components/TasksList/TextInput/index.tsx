@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { useRef } from '../../../hooks/useRef';
 import { useTask } from '../../../hooks/useTask';
 
 import { TaskLabel } from '../../../styles/TaskLabelStyle';
 import { Container } from './styles';
 
-const TextInput: React.FC = () => {
+const TextInputComponent = () => {
   const { labelRef, inputRef } = useRef();
   const { newTaskDescription, setNewTaskDescription, handleCreateTask } =
     useTask();
@@ -34,4 +35,4 @@ const TextInput: React.FC = () => {
   );
 };
 
-export { TextInput };
+export const TextInput = memo(TextInputComponent);

@@ -2,6 +2,8 @@ import {
   forwardRef,
   ForwardRefRenderFunction,
   InputHTMLAttributes,
+  memo,
+  useCallback,
   useState,
 } from 'react';
 import Image from 'next/image';
@@ -20,21 +22,21 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   const [inputType, setInputType] = useState(type);
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleToggleShowPassword = () => {
+  const handleToggleShowPassword = useCallback(() => {
     if (inputType === 'password') {
       setInputType('text');
     } else {
       setInputType('password');
     }
-  };
+  }, [inputType]);
 
-  const handleInputFocus = () => {
+  const handleInputFocus = useCallback(() => {
     setIsFocused(true);
-  };
+  }, []);
 
-  const handleInputBlur = () => {
+  const handleInputBlur = useCallback(() => {
     setIsFocused(false);
-  };
+  }, []);
 
   return (
     <Container>
@@ -72,4 +74,4 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   );
 };
 
-export const Input = forwardRef(InputBase);
+export const Input = memo(forwardRef(InputBase));

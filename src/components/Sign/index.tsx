@@ -1,9 +1,16 @@
-import React from 'react';
+import { isEqual } from 'lodash';
+import React, { memo, ReactNode } from 'react';
 
 import { Container } from './styles';
 
-const Sign: React.FC = ({ children }) => {
+interface ISignProps {
+  children: ReactNode;
+}
+
+const SignComponent = ({ children }: ISignProps) => {
   return <Container>{children}</Container>;
 };
 
-export { Sign };
+export const Sign = memo(SignComponent, (prevProps, nextProps) => {
+  return isEqual(prevProps.children, nextProps.children);
+});

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { memo } from 'react';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -8,7 +9,7 @@ interface IHeaderProps {
   toggleTheme: () => void;
 }
 
-const Header: React.FC<IHeaderProps> = ({ toggleTheme }) => {
+const HeaderComponent = ({ toggleTheme }: IHeaderProps) => {
   const { user, signOut } = useAuth();
 
   return (
@@ -49,4 +50,4 @@ const Header: React.FC<IHeaderProps> = ({ toggleTheme }) => {
   );
 };
 
-export { Header };
+export const Header = memo(HeaderComponent);

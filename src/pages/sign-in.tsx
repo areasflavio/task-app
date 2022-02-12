@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -22,7 +22,7 @@ const signInFormSchema = yup.object().shape({
   password: yup.string().required('Password required'),
 });
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const {
@@ -35,37 +35,40 @@ const SignIn: React.FC = () => {
 
   const { signIn } = useAuth();
 
-  const onSubmit: SubmitHandler<SignInFormData> = async (values) => {
-    toast.promise(
-      signIn(values),
-      {
-        loading: 'Hold on...',
-        success: (
-          <span>
-            <b>Authenticated!</b>
-            <br />
-            Welcome back...
-          </span>
-        ),
-        error: (
-          <span>
-            <b>Authentication failed.</b>
-            <br />
-            Check your credentials.
-          </span>
-        ),
-      },
-      {
-        style: {
-          minWidth: '250px',
+  const onSubmit: SubmitHandler<SignInFormData> = useCallback(
+    async (values) => {
+      toast.promise(
+        signIn(values),
+        {
+          loading: 'Hold on...',
+          success: (
+            <span>
+              <b>Authenticated!</b>
+              <br />
+              Welcome back...
+            </span>
+          ),
+          error: (
+            <span>
+              <b>Authentication failed.</b>
+              <br />
+              Check your credentials.
+            </span>
+          ),
         },
-      }
-    );
-  };
+        {
+          style: {
+            minWidth: '250px',
+          },
+        }
+      );
+    },
+    [signIn]
+  );
 
-  const handleButtonSubmit = () => {
+  const handleButtonSubmit = useCallback(() => {
     btnRef.current?.click();
-  };
+  }, []);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -40,7 +40,7 @@ const SignUpFormData = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const {
     register,
@@ -48,7 +48,7 @@ const SignUp: React.FC = () => {
     formState: { errors },
   } = useForm<SignUpFormData>({ resolver: yupResolver(SignUpFormData) });
 
-  const handleSignUp = async (data: SignUpData) => {
+  const handleSignUp = useCallback(async (data: SignUpData) => {
     try {
       await api.post('/users', data);
 
@@ -62,39 +62,42 @@ const SignUp: React.FC = () => {
 
       return Promise.reject();
     }
-  };
+  }, []);
 
-  const onSubmit = (data: SignUpData) => {
-    toast.promise(
-      handleSignUp(data),
-      {
-        loading: 'Hold on...',
-        success: (
-          <span>
-            <b>Account created!</b>
-            <br />
-            You can sign in now.
-          </span>
-        ),
-        error: (
-          <span>
-            <b>Operation failed.</b>
-            <br />
-            Try again.
-          </span>
-        ),
-      },
-      {
-        style: {
-          minWidth: '250px',
+  const onSubmit = useCallback(
+    (data: SignUpData) => {
+      toast.promise(
+        handleSignUp(data),
+        {
+          loading: 'Hold on...',
+          success: (
+            <span>
+              <b>Account created!</b>
+              <br />
+              You can sign in now.
+            </span>
+          ),
+          error: (
+            <span>
+              <b>Operation failed.</b>
+              <br />
+              Try again.
+            </span>
+          ),
         },
-      }
-    );
-  };
+        {
+          style: {
+            minWidth: '250px',
+          },
+        }
+      );
+    },
+    [handleSignUp]
+  );
 
-  const handleButtonSubmit = () => {
+  const handleButtonSubmit = useCallback(() => {
     btnRef.current?.click();
-  };
+  }, []);
 
   return (
     <>
@@ -150,21 +153,3 @@ const SignUp: React.FC = () => {
 };
 
 export default SignUp;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const cookies = parseCookies(ctx);
-  const token = cookies['tasked.token'];
-
-  if (token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
