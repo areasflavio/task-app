@@ -33,6 +33,24 @@ export const Container = styled.section`
     &:hover {
       filter: brightness(0.95);
     }
+
+    &.outline {
+      background: ${(props) => props.theme.colors.bgColor};
+      color: ${(props) => props.theme.colors.highlightColor};
+      border: 1px solid ${(props) => props.theme.colors.highlightColor};
+
+      transition: all 0.2s;
+
+      &:hover {
+        color: ${(props) => props.theme.colors.bgColor};
+        background: ${(props) => props.theme.colors.highlightColor};
+        filter: brightness(1);
+      }
+    }
+
+    & + button {
+      margin-top: 1rem;
+    }
   }
 
   p {

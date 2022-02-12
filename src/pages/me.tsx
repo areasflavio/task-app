@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, useCallback, useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Router from 'next/router';
 import * as yup from 'yup';
@@ -39,7 +39,7 @@ const updateFormSchema = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const {
@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
 
   const { user } = useAuth();
 
-  const updateAvatar = async (formData: FormData) => {
+  const updateAvatar = useCallback(async (formData: FormData) => {
     try {
       const { 'tasked.token': token } = parseCookies();
 
@@ -70,21 +70,104 @@ const Profile: React.FC = () => {
     } catch (err) {
       return Promise.reject();
     }
-  };
+  }, []);
 
-  const handleAvatarChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const formData = new FormData();
+  const handleAvatarChange = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const formData = new FormData();
 
-      formData.append('avatar', e.target.files[0]);
+        formData.append('avatar', e.target.files[0]);
+
+        toast.promise(
+          updateAvatar(formData),
+          {
+            loading: 'Hold on...',
+            success: (
+              <span>
+                <b>Avatar updated!</b>
+                <br />
+                Enjoy.
+              </span>
+            ),
+            error: (
+              <span>
+                <b>This went wrong.</b>
+                <br />
+                Try again.
+              </span>
+            ),
+          },
+          {
+            style: {
+              minWidth: '250px',
+            },
+          }
+        );
+      }
+    },
+    []
+  );
+
+  const updateUser = useCallback(async (data: UpdateFormData) => {
+    try {
+      const { 'tasked.token': token } = parseCookies();
+
+      api.patch('/users/me', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTimeout(() => {
+        Router.reload();
+      }, 1000);
+
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject();
+    }
+  }, []);
+
+  const handleLogoutAll = useCallback(async () => {
+    try {
+      const { 'tasked.token': token } = parseCookies();
+
+      api.post(
+        '/users/logoutAll',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      Router.reload();
+    } catch (err) {
+      console.log(err);
+
+      toast.error('This went wrong.');
+    }
+  }, []);
+
+  const onSubmit: SubmitHandler<UpdateFormData> = useCallback(
+    async (values: any) => {
+      const updatedData: any = {};
+
+      for (const item in values) {
+        if (item !== 'confirm_password' && values[item].trim() !== '') {
+          updatedData[item] = values[item];
+        }
+      }
 
       toast.promise(
-        updateAvatar(formData),
+        updateUser(updatedData),
         {
           loading: 'Hold on...',
           success: (
             <span>
-              <b>Avatar updated!</b>
+              <b>Profile updated!</b>
               <br />
               Enjoy.
             </span>
@@ -103,68 +186,13 @@ const Profile: React.FC = () => {
           },
         }
       );
-    }
-  };
+    },
+    []
+  );
 
-  const updateUser = async (data: UpdateFormData) => {
-    try {
-      const { 'tasked.token': token } = parseCookies();
-
-      api.patch('/users/me', data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setTimeout(() => {
-        Router.reload();
-      }, 1000);
-
-      return Promise.resolve();
-    } catch (err) {
-      return Promise.reject();
-    }
-  };
-
-  const onSubmit: SubmitHandler<UpdateFormData> = async (values: any) => {
-    const updatedData: any = {};
-
-    for (const item in values) {
-      if (item !== 'confirm_password' && values[item].trim() !== '') {
-        updatedData[item] = values[item];
-      }
-    }
-
-    toast.promise(
-      updateUser(updatedData),
-      {
-        loading: 'Hold on...',
-        success: (
-          <span>
-            <b>Profile updated!</b>
-            <br />
-            Enjoy.
-          </span>
-        ),
-        error: (
-          <span>
-            <b>This went wrong.</b>
-            <br />
-            Try again.
-          </span>
-        ),
-      },
-      {
-        style: {
-          minWidth: '250px',
-        },
-      }
-    );
-  };
-
-  const handleButtonSubmit = () => {
+  const handleButtonSubmit = useCallback(() => {
     btnRef.current?.click();
-  };
+  }, []);
 
   return (
     <>
@@ -219,6 +247,10 @@ const Profile: React.FC = () => {
 
       <FormAction>
         <button onClick={handleButtonSubmit}>confirm</button>
+
+        <button onClick={handleLogoutAll} className="outline">
+          logout all
+        </button>
 
         <Toaster position="top-center" />
       </FormAction>
