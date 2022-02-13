@@ -6,6 +6,8 @@ export const AvatarInput = styled.section`
   margin-bottom: 1rem;
 
   img {
+    min-width: 9.375rem;
+    min-height: 9.375rem;
     border-radius: 50%;
     background-color: ${(props) => props.theme.colors.bgColor};
   }

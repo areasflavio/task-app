@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useRef } from '../../../hooks/useRef';
 import { useTask } from '../../../hooks/useTask';
 
@@ -35,4 +34,4 @@ const TextInputComponent = () => {
   );
 };
 
-export const TextInput = memo(TextInputComponent);
+export const TextInput = TextInputComponent;

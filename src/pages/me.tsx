@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useRef } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Router from 'next/router';
 import * as yup from 'yup';
@@ -41,6 +41,7 @@ const updateFormSchema = yup.object().shape({
 
 const Profile = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
+  const [avatarURL, setAvatarURL] = useState('');
 
   const {
     register,
@@ -51,6 +52,24 @@ const Profile = () => {
   });
 
   const { user } = useAuth();
+
+  useEffect(() => {
+    const getAvatar = async () => {
+      try {
+        await api.get(`/users/${user?._id}/avatar`);
+
+        setAvatarURL(`${api.defaults.baseURL}/users/${user?._id}/avatar`);
+      } catch (err) {
+        console.log(err);
+
+        setAvatarURL(
+          'https://via.placeholder.com/150/ffffff/111111?text=No Avatar'
+        );
+      }
+    };
+
+    getAvatar();
+  }, [user?._id]);
 
   const updateAvatar = useCallback(async (formData: FormData) => {
     try {
@@ -106,7 +125,7 @@ const Profile = () => {
         );
       }
     },
-    []
+    [updateAvatar]
   );
 
   const updateUser = useCallback(async (data: UpdateFormData) => {
@@ -198,12 +217,7 @@ const Profile = () => {
     <>
       <Sign>
         <AvatarInput>
-          <img
-            src={`${api.defaults.baseURL}/users/${user?._id}/avatar` || ''}
-            alt={user?.name}
-            width="150"
-            height="150"
-          />
+          <img src={avatarURL} alt={user?.name} width="150" height="150" />
 
           <label htmlFor="avatar">
             <input type="file" id="avatar" onChange={handleAvatarChange} />

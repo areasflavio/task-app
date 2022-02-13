@@ -35,7 +35,7 @@ const TasksListComponent = () => {
 
   return (
     <Container>
-      {tasks.length === 0 && isNewTaskInputOpen && (
+      {tasks.length === 0 && !isNewTaskInputOpen && (
         <p>{user?.name}, what do you want to get done today?</p>
       )}
 

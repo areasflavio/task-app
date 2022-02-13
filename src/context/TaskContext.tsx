@@ -148,7 +148,7 @@ const TaskProvider: React.FC = ({ children }) => {
 
     setEditingTask(null);
     setNewTaskDescription('');
-    handleToggleCreateInput();
+    handleToggleCreateInput(false);
   };
 
   const handleFilterTask = (id: string) => {
@@ -195,10 +195,10 @@ const TaskProvider: React.FC = ({ children }) => {
     handleFilterTask(id);
   };
 
-  const handleToggleCreateInput = () => {
-    setIsNewTaskInputOpen(!isNewTaskInputOpen);
+  const handleToggleCreateInput = (state = true) => {
+    setIsNewTaskInputOpen(state);
 
-    if (isNewTaskInputOpen) {
+    if (state) {
       const label = labelRef.current;
       if (label) label.style.display = 'block';
 

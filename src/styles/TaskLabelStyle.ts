@@ -97,7 +97,7 @@ export const TaskLabel = styled.label`
     background: ${(props) => props.theme.colors.textSecColor};
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 60%;
 
     border-radius: 1rem;
 
