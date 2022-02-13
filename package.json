@@ -1,6 +1,8 @@
 {
-  "name": "task-app-web",
+  "name": "task-app",
   "private": true,
+  "repository": "git@github.com:areasflavio/task-app.git",
+  "author": "Flávio Arêas <vflavio9@gmail.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
